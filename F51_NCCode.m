@@ -1,11 +1,11 @@
 function F51_NCCode( Schraffuren,Titelpfad,NCText,VorschubDominant )
 %F51_NCCode berechnet aus den Schraffuren den NC-Code
 %Imput dieser Funktion ist das Cell Array Schraffuren. Jede Zeile in
-%diesem Cell Array enthält die berechneten Schraffuren einer Schnittebene.
+%diesem Cell Array enthÃ¤lt die berechneten Schraffuren einer Schnittebene.
 %In den ersten drei Spalten sind die x-, y- und z-Koordinaten der einzelnen
-%Schraffurpunkte enthalten. In der vierten Spalte ist definiert um was für
+%Schraffurpunkte enthalten. In der vierten Spalte ist definiert um was fÃ¼r
 %einen Linietyp es sich handelt. 
-%0=Eilganglinie, die mit ausgeschaltetem Laser so schnell wie möglich 
+%0=Eilganglinie, die mit ausgeschaltetem Laser so schnell wie mÃ¶glich 
 %abgefahren werden kann (G00)
 %1=Linie, die mit eingeschaltetem Laser mit Scangeschwindigkeit abgefahren
 %werden kann  (G01)
@@ -16,14 +16,15 @@ function F51_NCCode( Schraffuren,Titelpfad,NCText,VorschubDominant )
 %5=Linie, die mit ausgeschaltetem Laser abgefahren wird (Zwischenlinie)
 %7=Linie, die mit ausgeschaltetem Laser abgefahren wird (Jumplinie)
 %Der Imput Titelpfad gibt an, wo das erstellte Textfile gespeichert wird.
-%Der Imput NCText ist ein Struct und enhält die CodeSchnipsel, aus denen
+%Der Imput NCText ist ein Struct und enhÃ¤lt die CodeSchnipsel, aus denen
 %sich der NC-Code zusammensetzt. Diese sind alle als Strings gespeichert.
 %Der Imput VorschubDominant ist ein Array in dem die Drehgeschwindigkeit
-%für jede Ebene gespeichert ist [°/s].
+%fÃ¼r jede Ebene gespeichert ist [Â°/s].
 
-fid = fopen(Titelpfad, 'w'); %Ein neues txt-file wird geöffnet
+%fid = fopen(Titelpfad, 'w'); %Ein neues txt-file wird geÃ¶ffnet
+fid = fopen(Titelpfad, 'W'); %Ein neues txt-file wird geÃ¶ffnet
 
-%Header wird ins Textfile eingefügt
+%Header wird ins Textfile eingefÃ¼gt
 if ~isempty(NCText.Header1)
     fprintf(fid,[NCText.Header1,'\r\n']);
 end
@@ -55,19 +56,19 @@ if ~isempty(NCText.Header10)
     fprintf(fid,[NCText.Header10,'\r\n']);
 end
 
-%CodeZeilen um die Bearbeitungshöhe anzusteuern wird zusammengesetzt
+%CodeZeilen um die BearbeitungshÃ¶he anzusteuern wird zusammengesetzt
 FokusString=[NCText.Fokus1,'%4.4f',NCText.Fokus2,'%4.4f',NCText.Fokus3,'%4.4f',NCText.Fokus4,'\r\n'];
 %CodeZeilen um den Vorschub der Dominanten Achse anzugeben wird zusammengesetzt
 VorschubString=[NCText.Vorschub1,'%4.4f',NCText.Vorschub2,'\r\n'];
-%CodeZeilen für den Eilgang wird zusammengesetzt
+%CodeZeilen fÃ¼r den Eilgang wird zusammengesetzt
 EilgangString=[NCText.Eilgang1,'%4.4f',NCText.Eilgang2,'%4.4f',NCText.Eilgang3,'\r\n']; 
-%CodeZeilen für den Laseraus wird zusammengesetzt
+%CodeZeilen fÃ¼r den Laseraus wird zusammengesetzt
 LaserausString=[NCText.Laseraus1,'%4.4f',NCText.Laseraus2,'%4.4f',NCText.Laseraus3,'\r\n']; 
-%CodeZeilen für eine Startskywritelinie wird zusammengesetzt
+%CodeZeilen fÃ¼r eine Startskywritelinie wird zusammengesetzt
 SkywriteStartString=[NCText.StartSky1,'%4.4f',NCText.StartSky2,'%4.4f',NCText.StartSky3,'\r\n']; 
-%CodeZeilen für eine Laserbearbeitungslinie wird zusammengesetzt
+%CodeZeilen fÃ¼r eine Laserbearbeitungslinie wird zusammengesetzt
 LaserString=[NCText.Laser1,'%4.4f',NCText.Laser2,'%4.4f',NCText.Laser3,'\r\n']; 
-%CodeZeilen für eine Endskywritelinie wird zusammengesetzt
+%CodeZeilen fÃ¼r eine Endskywritelinie wird zusammengesetzt
 SkywriteEndString=[NCText.EndSky1,'%4.4f',NCText.EndSky2,'%4.4f',NCText.EndSky3,'\r\n']; 
 %CodeZeilen um den Laser einzuschalten wird zusammengesetzt
 if isempty(NCText.Laseron)
@@ -81,12 +82,12 @@ if isempty(NCText.Laseroff)
 else
     LaseroffString=[NCText.Laseroff,'\r\n'];
 end
-%CodeZeilen für die Auskommentierung wird zusammengesetzt
+%CodeZeilen fÃ¼r die Auskommentierung wird zusammengesetzt
 KommentarString1=[NCText.Kommentar1,'################### Ebene %1.0f ####################',NCText.Kommentar2,'\r\n'];
 
 bar = waitbar(0,'NC-Code wird berechnet...'); %Ladebalken erstellen
 for k=1:size(Schraffuren,1) %Index, der durch die Ebenen iteriert
-    if ~isempty(Schraffuren{k}) %Es gibt Schraffuren auf dieser Höhe
+    if ~isempty(Schraffuren{k}) %Es gibt Schraffuren auf dieser HÃ¶he
         
         fprintf(fid,KommentarString1,k);
         
