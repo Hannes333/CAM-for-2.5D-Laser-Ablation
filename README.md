@@ -8,4 +8,4 @@ The thesis, the GUI and the comments in the code are written in german.
 
 The source code can be executed with Matlab. Make sure, that you download all files and put them in the same folder. To start the LaserCAM GUI for 2.5D laser ablation of cartesian workpieces, you have to execute the main file: 'LaserCAMkartesisch.m'. If you want to start the LaserCAM GUI for 2.5D laser ablation of cylindrical workpieces, you have to execute the main file: 'LaserCAMzylindrisch.m'.
 
-If you don't have Matlab, you can start the GUIs directly with the Matlab compiled versions: 'LaserCAMkartesich.exe' or 'LaserCAMzylindrisch.exe'. This only works if you have Matlab Compiler Runtime (MCR) version 7.14 installed. 
+If you don't have Matlab, you can start the GUIs directly with the Matlab compiled versions: 'LaserCAMkartesich.exe' or 'LaserCAMzylindrisch.exe'. This only works if you have Matlab Compiler Runtime (MCR) installed. 
