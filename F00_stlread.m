@@ -31,8 +31,6 @@ function varargout = stlread(file)
     %    [f,v,n] = stlascii(M);
     %end
     
-    %v=round(v*100000000)/100000000; %Koordinaten jedes Punktes wird auf 8 Nachkommastellen gerundet
-        
     varargout = cell(1,nargout);
     switch nargout        
         case 2
@@ -98,11 +96,15 @@ function [F,V,N] = stlbinary(M)
         
         n = double(n);
         if isequal(n,[0 0 0]) %Eingelesener Normalvektor ist Null (noch nicht bestimmt)
-            n=cross(v2-v1,v3-v1); %Normalenvektor wird mit Kreuzprodukt berechnet
+            %n=cross(v2-v1,v3-v1); %Normalenvektor wird mit Kreuzprodukt berechnet
+            a=v2-v1;
+            b=v3-v1;
+            n=[a(2)*b(3)-a(3)*b(2),a(3)*b(1)-a(1)*b(3),a(1)*b(2)-a(2)*b(1)];
         end
         if n==[0 0 0] %berechneter Normalenvektor ist immer noch Null (also Dreieck fehlerhaft)
             % STL-Objekt hat fehlerhafte Dreiecke (Zwei Kanten liegen
             % aufeinander) Solch fehlerhaften Dreiecke werden verworfen
+            warning('Fehlerhaftes Dreieck verworfen');
         else
             % Figure out where to fit these new vertices, and the face, in the
             % larger F and V collections.
