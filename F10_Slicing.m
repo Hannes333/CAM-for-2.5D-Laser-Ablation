@@ -1,17 +1,17 @@
 function [ Konturen ] = F10_Slicing(f,v,Schnitthoehen,Schichtdicke)
 %F10_Slicing berechnet aus der Stl-Datei die Schnitkonturen auf den
 %entsprechenden Schnitthoehen.
-%Imput Array v, enthält die Koordinaten der Eckpunkt der Dreiecke, aus
+%Imput Array v, enthÃ¤lt die Koordinaten der Eckpunkt der Dreiecke, aus
 %denen das Stl-Objekt aufgebaut ist.
-%imput Array f, enthält die Informationen, welche drei Eckpunkte vom Array
-%v zu einem Dreieck verbunden werden müssen.
-%Imput Vektor Schnitthoehen enthält jene Höhen auf denen ein Schnitt
+%imput Array f, enthÃ¤lt die Informationen, welche drei Eckpunkte vom Array
+%v zu einem Dreieck verbunden werden mÃ¼ssen.
+%Imput Vektor Schnitthoehen enthÃ¤lt jene HÃ¶hen auf denen ein Schnitt
 %berechnet werden soll
 %Output ist das Cell Array Konturen. In diesem Cell
-%Array enthält jede Zeile die geschlossenen Konturen einer Schnittebene.
+%Array enthÃ¤lt jede Zeile die geschlossenen Konturen einer Schnittebene.
 %Jedes einzelnes Array vom Cell Array Konturen hat vier Spalten.
 %In den ersten drei Spalten sind die x-, y- und z-Koordinaten der einzelnen
-%Eckpunkte der geschlossenen Kontur. Werden diese Zeile für Zeile
+%Eckpunkte der geschlossenen Kontur. Werden diese Zeile fÃ¼r Zeile
 %miteinander verbunden, entsteht eine geschlossene Kontur. 
 %In der vierten Spalte jedes Arrays, ist die Dreiecksnummer der
 %Stl-Datei gespeichert aus dem der Eckpunkt auf dieser Zeile entstanden
@@ -20,7 +20,7 @@ function [ Konturen ] = F10_Slicing(f,v,Schnitthoehen,Schichtdicke)
 n=size(f,1); %Anzahl Dreiecke
 Z=length(Schnitthoehen); %Anzahl Schnittebenen
 
-%Schritt 0: Arraygrösse Abschätzen
+%Schritt 0: ArraygrÃ¶sse AbschÃ¤tzen
 AnzahlSectPts=0;
 for i=1:n %Index, der durch die Dreiecke iteriert
     minz=min(v(f(i,:),3));
@@ -37,13 +37,13 @@ bar = waitbar(0,'Schnittkonturen werden berechnet...'); %Ladebalken erstellen
 for i=1:n %Index, der durch die Dreiecke iteriert
     vs=[v(f(i,1),:);v(f(i,2),:);v(f(i,3),:)]; %aktuelles Dreieck wir in vs zwischengespeichert
     [~,ind]=sort(vs(:,3),'descend');
-    vs=vs(ind,:); %die drei Eckpunktkoordinaten sind nun absteigend nach den Z einträgen sortiert 
+    vs=vs(ind,:); %die drei Eckpunktkoordinaten sind nun absteigend nach den Z eintrÃ¤gen sortiert 
     if (vs(1,3)>vs(2,3))&&(vs(2,3)>vs(3,3)) %Normalfall
-        Schnitthoehen1=Schnitthoehen((Schnitthoehen<vs(1,3))&(Schnitthoehen>=vs(2,3))); %Aus Schnitthoehen werden jene höhen die zwischen Punkt 1 und 2 sind in vektor Schnitthoehen1 geschrieben
+        Schnitthoehen1=Schnitthoehen((Schnitthoehen<vs(1,3))&(Schnitthoehen>=vs(2,3))); %Aus Schnitthoehen werden jene hÃ¶hen die zwischen Punkt 1 und 2 sind in vektor Schnitthoehen1 geschrieben
         if ~isempty(Schnitthoehen1)
             p1=ones(size(Schnitthoehen1))*vs(2,:)+(ones(size(Schnitthoehen1))*(vs(1,:)-vs(2,:))).*...
             ((Schnitthoehen1-vs(2,3))/(vs(1,3)-vs(2,3))*ones(1,3)); %Schnittpunkte der Kante werden berechnet
-            p1(:,3)=Schnitthoehen1; %Z-Koordinaten auf Schnitthöhen trimmen
+            p1(:,3)=Schnitthoehen1; %Z-Koordinaten auf SchnitthÃ¶hen trimmen
         else
             p1=[];
         end
@@ -51,7 +51,7 @@ for i=1:n %Index, der durch die Dreiecke iteriert
         if ~isempty(Schnitthoehen2)
             p2=ones(size(Schnitthoehen2))*vs(3,:)+(ones(size(Schnitthoehen2))*(vs(2,:)-vs(3,:))).*...
             ((Schnitthoehen2-vs(3,3))/(vs(2,3)-vs(3,3))*ones(1,3)); %Schnittpunkte der Kante werden berechnet
-            p2(:,3)=Schnitthoehen2; %Z-Koordinaten auf Schnitthöhen trimmen
+            p2(:,3)=Schnitthoehen2; %Z-Koordinaten auf SchnitthÃ¶hen trimmen
         else
             p2=[];
         end
@@ -59,7 +59,7 @@ for i=1:n %Index, der durch die Dreiecke iteriert
         if ~isempty(Schnitthoehen3)
             p3=ones(size(Schnitthoehen3))*vs(3,:)+(ones(size(Schnitthoehen3))*(vs(1,:)-vs(3,:))).*...
             ((Schnitthoehen3-vs(3,3))/(vs(1,3)-vs(3,3))*ones(1,3)); %Schnittpunkte der Kante werden berechnet
-            p3(:,3)=Schnitthoehen3; %Z-Koordinaten auf Schnitthöhen trimmen
+            p3(:,3)=Schnitthoehen3; %Z-Koordinaten auf SchnitthÃ¶hen trimmen
             count=2*length(Schnitthoehen3); %number of intersection points
             if (counter-1+count)>size(SectPts,1) %Hat es noch genug platz in SectPts?
                 warning('Speicher in SectPts muss aloziert werden(langsam)');
@@ -74,7 +74,7 @@ for i=1:n %Index, der durch die Dreiecke iteriert
         if ~isempty(Schnitthoehen1)
             p1=ones(size(Schnitthoehen1))*vs(2,:)+(ones(size(Schnitthoehen1))*(vs(1,:)-vs(2,:))).*...
             ((Schnitthoehen1-vs(2,3))/(vs(1,3)-vs(2,3))*ones(1,3)); %Schnittpunkte der Kante werden berechnet
-            p1(:,3)=Schnitthoehen1; %Z-Koordinaten auf Schnitthöhen trimmen
+            p1(:,3)=Schnitthoehen1; %Z-Koordinaten auf SchnitthÃ¶hen trimmen
         else
             p1=[];
         end
@@ -82,7 +82,7 @@ for i=1:n %Index, der durch die Dreiecke iteriert
             
             p11=ones(size(Schnitthoehen1))*vs(3,:)+(ones(size(Schnitthoehen1))*(vs(1,:)-vs(3,:))).*...
             ((Schnitthoehen1-vs(3,3))/(vs(1,3)-vs(3,3))*ones(1,3)); %Schnittpunkte der Kante werden berechnet
-            p11(:,3)=Schnitthoehen1; %Z-Koordinaten auf Schnitthöhen trimmen
+            p11(:,3)=Schnitthoehen1; %Z-Koordinaten auf SchnitthÃ¶hen trimmen
         else
             p11=[];
         end
@@ -99,14 +99,14 @@ for i=1:n %Index, der durch die Dreiecke iteriert
         if ~isempty(Schnitthoehen1)
             p1=ones(size(Schnitthoehen1))*vs(3,:)+(ones(size(Schnitthoehen1))*(vs(1,:)-vs(3,:))).*...
             ((Schnitthoehen1-vs(3,3))/(vs(1,3)-vs(3,3))*ones(1,3)); %Schnittpunkte der Kante werden berechnet
-            p1(:,3)=Schnitthoehen1; %Z-Koordinaten auf Schnitthöhen trimmen
+            p1(:,3)=Schnitthoehen1; %Z-Koordinaten auf SchnitthÃ¶hen trimmen
         else
             p1=[];
         end
         if ~isempty(Schnitthoehen1)
             p11=ones(size(Schnitthoehen1))*vs(3,:)+(ones(size(Schnitthoehen1))*(vs(2,:)-vs(3,:))).*...
             ((Schnitthoehen1-vs(3,3))/(vs(2,3)-vs(3,3))*ones(1,3)); %Schnittpunkte der Kante werden berechnet
-            p11(:,3)=Schnitthoehen1; %Z-Koordinaten auf Schnitthöhen trimmen
+            p11(:,3)=Schnitthoehen1; %Z-Koordinaten auf SchnitthÃ¶hen trimmen
         else
             p11=[];
         end
@@ -125,8 +125,8 @@ for i=1:n %Index, der durch die Dreiecke iteriert
         waitbar((i/n)/2) %Aktualisierung Ladebalken
     end
 end
-SectPts(counter+1:end,:)=[]; %Leere Einträge entfernen
-SectPts(counter,1:3)=[inf,inf,inf]; %SchlussPunkt wird angehängt damit Forschleife in Schritt 3a ein Schlusspunkt hat
+SectPts(counter+1:end,:)=[]; %Leere EintrÃ¤ge entfernen
+SectPts(counter,1:3)=[inf,inf,inf]; %SchlussPunkt wird angehÃ¤ngt damit Forschleife in Schritt 3a ein Schlusspunkt hat
 %toc
 %Schritt1=SectPts;
 
@@ -146,11 +146,12 @@ SectPts=SectPts(ind,:);
 PlaneCurves=cell(Z,1); %to store the points for each cutting Plane in a cell
 staIndex=1;
 staWert=SectPts(staIndex,3);
-PlaneCurvesIndex=1;
+%PlaneCurvesIndex=1;
 for endIndex=1:size(SectPts,1)
     if SectPts(endIndex,3)~=staWert
+        PlaneCurvesIndex=(Schnitthoehen==staWert);
         PlaneCurves{PlaneCurvesIndex,1}=SectPts(staIndex:endIndex-1,:);
-        PlaneCurvesIndex=PlaneCurvesIndex+1;
+        %PlaneCurvesIndex=PlaneCurvesIndex+1;
         staIndex=endIndex;
         staWert=SectPts(staIndex,3);
     end
@@ -168,7 +169,7 @@ for k=1:Z %Iteriert durch Anzahl Schnittebenen
     Reparatur=[]; %Array zur Speicherung der Start- und Endpunkte ungeschlossener Konturnsegmente
     while ~isempty(PlaneCurves{k,1}) 
         punktindex=0; %Index des Aktuellen Punktes dessen FolgePunkt oder FolgeGerade gesucht wird
-        indexliste=zeros(size(PlaneCurves{k,1},1),1); %indexliste enthält die sortierten Indexe für eine geschlossene Kontur
+        indexliste=zeros(size(PlaneCurves{k,1},1),1); %indexliste enthÃ¤lt die sortierten Indexe fÃ¼r eine geschlossene Kontur
         counter=1; %Index zur schrittweisen Einordnung der Punktindex in der indexliste
         jumpstyle=0; %jumpstyle==1 FolgePunkt suchen, jumpstyle==0 FolgeGerade suchen
         ungeschlossen=0; %Variable zum Finden ungeschlossener Kontursegmente
@@ -179,7 +180,7 @@ for k=1:Z %Iteriert durch Anzahl Schnittebenen
             indexliste(counter)=punktindex; %aktueller Punktindex wird in indexliste gespeichert
             counter=counter+1;
             if jumpstyle==0  %FolgeGerade wird gesucht  (nach Eintrag 4)
-                x=PlaneCurves{k,1}(punktindex,4)==PlaneCurves{k,1}(:,4); %Einträge der FolgeGerade suchen die identisch zu Punktindex sind
+                x=PlaneCurves{k,1}(punktindex,4)==PlaneCurves{k,1}(:,4); %EintrÃ¤ge der FolgeGerade suchen die identisch zu Punktindex sind
                 x(punktindex)=0; %Aktueller Punktindex in x wird auf 0 gesetzt
                 punktindex=find(x); %Index des Folgepunktes gefunden
                 if length(punktindex)>1
@@ -193,8 +194,8 @@ for k=1:Z %Iteriert durch Anzahl Schnittebenen
                     punktindex=tmp;
                 end
                 jumpstyle=1;
-            else %(jumpstyle==1) %FolgePunkt wird gesucht (nach Einträge 1,2)
-                x=(PlaneCurves{k,1}(punktindex,1)==PlaneCurves{k,1}(:,1))&... %Einträge der FolgePunkte suchen die identisch zu Punktindex sind
+            else %(jumpstyle==1) %FolgePunkt wird gesucht (nach EintrÃ¤ge 1,2)
+                x=(PlaneCurves{k,1}(punktindex,1)==PlaneCurves{k,1}(:,1))&... %EintrÃ¤ge der FolgePunkte suchen die identisch zu Punktindex sind
                    (PlaneCurves{k,1}(punktindex,2)==PlaneCurves{k,1}(:,2)); %&...
                     %(PlaneCurves{k,1}(punktindex,3)==PlaneCurves{k,1}(:,3));
                 x(punktindex)=0; %Aktueller Punktindex in x wird auf 0 gesetzt
@@ -226,20 +227,20 @@ for k=1:Z %Iteriert durch Anzahl Schnittebenen
                 end
             end
         end
-        indexliste(counter:end)=[]; %restliche leere Einträge entfernen
-        Konturen{k,i}=PlaneCurves{k,1}(indexliste,1:4); %in richtiger Reihenfolge Rüberkopieren
-        i=i+1; %Index für geschlossene Kontur wird erhöht        
+        indexliste(counter:end)=[]; %restliche leere EintrÃ¤ge entfernen
+        Konturen{k,i}=PlaneCurves{k,1}(indexliste,1:4); %in richtiger Reihenfolge RÃ¼berkopieren
+        i=i+1; %Index fÃ¼r geschlossene Kontur wird erhÃ¶ht        
         PlaneCurves{k,1}(indexliste,:)=[]; %Abgearbeitete Punkte nach indexliste in PlaneCurves vernichten
     end
-    if size(Reparatur,1)>1 %Reparaturmodus für nicht geschlossene Konturen
+    if size(Reparatur,1)>1 %Reparaturmodus fÃ¼r nicht geschlossene Konturen
         disp(['in Ebene ', int2str(k),' befinden sich mehr als ein ungeschlossenes Kontursegment']);
-        while size(Reparatur,1)>2 %Reparaturarray enthält mehr als ein ungeschlossenes Konturensegement
+        while size(Reparatur,1)>2 %Reparaturarray enthÃ¤lt mehr als ein ungeschlossenes Konturensegement
             KurvsegA=Reparatur(2,1); %Index des ungeschlossenen Konturensegments A wird zwischengespeichert
-            closedist=Inf; %Variable zur Speicherung der kürzestenDistanz
-            for g=3:size(Reparatur,1) %Nächstgelegener Punkt wird gesucht
+            closedist=Inf; %Variable zur Speicherung der kÃ¼rzestenDistanz
+            for g=3:size(Reparatur,1) %NÃ¤chstgelegener Punkt wird gesucht
                 closedistneu=sqrt((Reparatur(2,2)-Reparatur(g,2))^2+(Reparatur(2,3)-Reparatur(g,3))^2); %Distanz zwischen Punkt 2 und Punkt g wird berechnet
                 if closedistneu<closedist 
-                    closedist=closedistneu; %neue noch kürzere Distanz zwischenspeichern
+                    closedist=closedistneu; %neue noch kÃ¼rzere Distanz zwischenspeichern
                     gindex=g;
                     KurvsegB=Reparatur(g,1); %Index des ungeschlossenen folgesegments zwischenspeichern
                 end
@@ -249,13 +250,13 @@ for k=1:Z %Iteriert durch Anzahl Schnittebenen
             elseif mod(gindex,2)==1 %ungerader FolgePunkt im Reparaturarray, Folgekontursegment muss nicht gekehrt werden
                 Reparatur(2,2:4)=Konturen{k,KurvsegB}(end,1:3);
                 Reparatur(gindex:gindex+1,:)=[]; %Index des abgearbeiteten Kontursegments aus Reparaturarray entfernen
-                Konturen{k,KurvsegA}=[Konturen{k,KurvsegA}(:,:);Konturen{k,KurvsegB}(:,:)]; %Kontursegment B zu Kontursegment A hinzufügen
-                Konturen{k,KurvsegB}=[]; %altes Kontursegment B löschen
+                Konturen{k,KurvsegA}=[Konturen{k,KurvsegA}(:,:);Konturen{k,KurvsegB}(:,:)]; %Kontursegment B zu Kontursegment A hinzufÃ¼gen
+                Konturen{k,KurvsegB}=[]; %altes Kontursegment B lÃ¶schen
             elseif mod(gindex,2)==0 %gerader FolgePunkt im Reparaturarray, Folgekontursegment muss gekert werden
                 Reparatur(2,2:4)=Konturen{k,KurvsegB}(1,1:3);
                 Reparatur(gindex-1:gindex,:)=[]; %Index des abgearbeiteten Kontursegments aus Reparaturarray entfernen
-                Konturen{k,KurvsegA}=[Konturen{k,KurvsegA}(:,:);flipud(Konturen{k,KurvsegB}(:,:))]; %Kontursegment B zu Kontursegment A hinzufügen
-                Konturen{k,KurvsegB}=[]; %altes Kontursegment B löschen
+                Konturen{k,KurvsegA}=[Konturen{k,KurvsegA}(:,:);flipud(Konturen{k,KurvsegB}(:,:))]; %Kontursegment B zu Kontursegment A hinzufÃ¼gen
+                Konturen{k,KurvsegB}=[]; %altes Kontursegment B lÃ¶schen
             end
         end
     end
@@ -272,7 +273,7 @@ close(bar) %Ladebalken schliessen
 for k=1:size(Konturen,1) %Iteriert durch Anzahl Schnittebenen
     for i=1:size(Konturen,2) %Iteriert durch Konturen auf dieser Schnittebene
         if ~isempty(Konturen{k,i})
-            Konturen{k,i}(2:2:end,:)=[]; %Jede zweite Zeile löschen
+            Konturen{k,i}(2:2:end,:)=[]; %Jede zweite Zeile lÃ¶schen
         end
     end
 end
