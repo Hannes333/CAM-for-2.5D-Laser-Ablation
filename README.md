@@ -11,4 +11,3 @@ If you don't have Matlab, you can start the GUIs directly with the Matlab compil
 
 Note that there are newer verions with additional functionality and some buggfixes available: 
 https://github.com/Hannes333/Computer-Aided-Manufacturing-Programm-for-2.5D-Laser-Ablation-Version-2.0 
-This repository on this page is only to save the code for version 1.0
